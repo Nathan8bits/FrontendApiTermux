@@ -1,6 +1,7 @@
 const inputUrl = document.querySelector("#inputUrl");
 const btnUrl = document.querySelector("#btnUrl");
 
+
 const numeroUsuario = document.getElementById("idUsuario");
 const btnGet = document.getElementById("btnGet");
 const btnGetTodos = document.getElementById("btnGetTodos");
