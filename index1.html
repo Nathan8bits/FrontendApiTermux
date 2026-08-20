@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teste API Usuários</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>Usuários</h1>
+
+        <section class="card">
+
+            <h2>Criar / Editar usuário</h2>
+
+            <form id="usuarioForm">
+
+                <input
+                    type="hidden"
+                    id="usuarioId"
+                >
+
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Nome"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="idade"
+                    placeholder="Idade"
+                    min="0"
+                    required
+                >
+
+                <button type="submit">
+                    Salvar
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelar"
+                    class="secundario"
+                >
+                    Cancelar
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>Buscar usuário</h2>
+
+            <div class="buscar">
+
+                <input
+                    type="number"
+                    id="buscarId"
+                    placeholder="ID"
+                    min="1"
+                >
+
+                <button id="btnBuscar">
+                    Buscar
+                </button>
+
+                <button
+                    id="btnTodos"
+                    class="secundario"
+                >
+                    Todos
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <div id="mensagem"></div>
+
+
+        <section class="card">
+
+            <h2>Registros</h2>
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Idade</th>
+                            <th>Ações</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabelaUsuarios"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

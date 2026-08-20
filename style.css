@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #eee;
+}
+
+form,
+body > div {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+h1 {
+    width: 100%;
+    margin: 0 0 10px;
+    color: #00ff88;
+}
+
+input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+
+    background: #222;
+    color: #fff;
+
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #00ff88;
+}
+
+/* Botões */
+
+button {
+    padding: 10px 15px;
+
+    border-radius: 6px;
+    border: 1px solid #00ff88;
+
+    background: #00aa5c;
+    color: #fff;
+
+    font-size: 15px;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #00ff88;
+    color: #111;
+}
+
+/* Lista de usuários */
+
+#listaUsuarios {
+    margin-top: 30px;
+    padding: 15px;
+    list-style: none;
+
+    background: #1b1b1b;
+    border: 2px solid #00ff88;
+    border-radius: 10px;
+
+    box-shadow: 0 0 10px #00ff8844;
+}
+
+/* Cada usuário */
+
+#listaUsuarios li {
+    padding: 12px 15px;
+    margin-bottom: 8px;
+
+    background: #292929;
+    border-left: 4px solid #00ff88;
+    border-radius: 5px;
+
+    color: #fff;
+}
+
+/* Evita espaço desnecessário no último item */
+
+#listaUsuarios li:last-child {
+    margin-bottom: 0;
+}
