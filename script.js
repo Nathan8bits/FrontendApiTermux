@@ -98,7 +98,7 @@ btnPost.addEventListener("click", async (event) => {
 });
 
 btnUrl.addEventListener("click", () => {
-  URL = `/usuarios${inputUrl.value}`;
+  URL = `${inputUrl.value}/usuarios`;
   content.textContent = inputUrl.value;
 })
 
