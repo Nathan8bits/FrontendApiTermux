@@ -14,12 +14,12 @@ const idade = document.querySelector("#idade");
 
 const btnUpdate = document.querySelector("#btnUpdate");
 
-const URL = "http://localhost:3000/usuarios";
+//const URL = "http://localhost:3000/usuarios";
+
+let URL = "http://localhost:3000/usuarios";
 
 const fetchApi = (value) => {
-  //const urlMontada = URL + "/" + value;
-
-  const result = fetch(`${URL}${value}`)
+  const result = fetch(`${URL}/usuarios${value}`)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -98,6 +98,7 @@ btnPost.addEventListener("click", async (event) => {
 });
 
 btnUrl.addEventListener("click", () => {
+  URL = inputUrl.value;
   content.textContent = inputUrl.value;
 })
 
