@@ -94,3 +94,10 @@ button:hover {
 #listaUsuarios li:last-child {
     margin-bottom: 0;
 }
+
+
+#console, 
+#idade,
+#idUsuario, #btnGet {
+    display: none;
+}

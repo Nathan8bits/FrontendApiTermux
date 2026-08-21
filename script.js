@@ -1,16 +1,16 @@
 const inputUrl = document.querySelector("#inputUrl");
 const btnUrl = document.querySelector("#btnUrl");
 
-const numeroUsuario = document.getElementById("idUsuario");
+//const numeroUsuario = document.getElementById("idUsuario");
 const btnGet = document.getElementById("btnGet");
 const btnGetTodos = document.getElementById("btnGetTodos");
-const content = document.getElementById("context");
-const consoleHtml = document.getElementById("console");
+//const content = document.getElementById("context");
+//const consoleHtml = document.getElementById("console");
 const listaUsuarios = document.querySelector("#listaUsuarios");
 
 const btnPost = document.querySelector("#btnPost");
 const nome = document.querySelector("#nome");
-const idade = document.querySelector("#idade");
+//const idade = document.querySelector("#idade");
 
 const btnUpdate = document.querySelector("#btnUpdate");
 
@@ -78,12 +78,12 @@ const deleteApi = (value) => {
 
 btnGet.addEventListener("click", async (event) => {
   event.preventDefault();
-  GetUsuariosId(numeroUsuario.value);
+  //GetUsuariosId(numeroUsuario.value);
 });
 
 btnGetTodos.addEventListener("click", async (event) => {
   event.preventDefault();
-  GetTodos();
+  getTodos();
 });
 
 btnPost.addEventListener("click", async (event) => {
@@ -91,15 +91,17 @@ btnPost.addEventListener("click", async (event) => {
 
   const dados = {
     nome: nome.value,
-    idade: idade.value,
+    idade: 0,
+    //idade.value,
   };
 
   PostUsuario(dados);
 });
 
-btnUrl.addEventListener("click", () => {
+btnUrl.addEventListener("click", (event) => {
   URL = `${inputUrl.value}/usuarios`;
-  content.textContent = inputUrl.value;
+  getTodos();
+  //content.textContent = inputUrl.value;
 })
 
 const render = (lista) => {
@@ -107,24 +109,26 @@ const render = (lista) => {
 
   lista.forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = `nome: ${item.nome}, idade: ${item.idade}`;
+   // li.textContent = `nome: ${item.nome}, idade: ${item.idade}`;
+    
+    li.textContent = item.nome;
     listaUsuarios.appendChild(li);
   });
 };
 
-const GetTodos = async () => {
-  consoleHtml.textContent = URL;
+const getTodos = async () => {
+  //consoleHtml.textContent = URL;
 
   const result = await fetchApi("");
-  content.textContent = `${JSON.stringify(result, undefined, 2)}`;
+  //content.textContent = `${JSON.stringify(result, undefined, 2)}`;
   render(result);
 };
 
 const GetUsuariosId = async (value) => {
-  consoleHtml.textContent = `${URL}/${value}`;
+  //consoleHtml.textContent = `${URL}/${value}`;
 
   const result = await fetchApi(`/${value}`);
-  content.textContent = `${JSON.stringify(result, undefined, 2)}`;
+  //content.textContent = `${JSON.stringify(result, undefined, 2)}`;
 
   render(result);
 };
@@ -132,12 +136,13 @@ const GetUsuariosId = async (value) => {
 const PostUsuario = async (dados) => {
   const result = await postApi(dados);
 
-  content.textContent = JSON.stringify(result, undefined, 2);
+  //content.textContent = JSON.stringify(result, undefined, 2);
   render(result);
+  getTodos();
 };
 
 const UpdateUsuario = async (value) => {
-  consoleHtml.textContent = `${URL}/${value}`;
+  //consoleHtml.textContent = `${URL}/${value}`;
 
   const dados = {
     nome: nomeUsuario.value,
@@ -146,13 +151,13 @@ const UpdateUsuario = async (value) => {
 
   const result = await updateApi(`/${value}`, dados);
 
-  content.textContent = JSON.stringify(result, undefined, 2);
+  //content.textContent = JSON.stringify(result, undefined, 2);
 };
 
 const DeleteUsuario = async (value) => {
-  consoleHtml.textContent = `${URL}/${value}`;
+  //consoleHtml.textContent = `${URL}/${value}`;
 
   const result = await deleteApi(`/${value}`);
 
-  content.textContent = JSON.stringify(result, undefined, 2);
+  //content.textContent = JSON.stringify(result, undefined, 2);
 };

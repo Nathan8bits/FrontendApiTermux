@@ -1,295 +1,158 @@
-const API = "http://localhost:3000";
-
-const tabela = document.getElementById("tabelaUsuarios");
-
-const formulario = document.getElementById("usuarioForm");
-
-const inputId = document.getElementById("usuarioId");
-const inputNome = document.getElementById("nome");
-const inputIdade = document.getElementById("idade");
-
-const mensagem = document.getElementById("mensagem");
-
-// ===============================
-// MENSAGEM
-// ===============================
-
-function mostrarMensagem(texto, tipo = "sucesso") {
-  mensagem.textContent = texto;
-  mensagem.className = tipo;
-}
-
-// ===============================
-// GET /usuarios
-// ===============================
-
-async function listarUsuarios() {
-  try {
-    const resposta = await fetch(`${API}/usuarios`);
-
-    if (!resposta.ok) {
-      throw new Error("Erro ao buscar usuários");
-    }
-
-    const usuarios = await resposta.json();
-
-    mostrarUsuarios(usuarios);
-  } catch (erro) {
-    mostrarMensagem(erro.message, "erro");
-  }
-}
-
-// ===============================
-// GET /usuarios/:id
-// ===============================
-
-async function buscarUsuario(id) {
-  try {
-    const resposta = await fetch(`${API}/usuarios/${id}`);
-
-    if (!resposta.ok) {
-      throw new Error("Usuário não encontrado");
-    }
-
-    const usuario = await resposta.json();
-
-    mostrarUsuarios([usuario]);
-
-    mostrarMensagem(`Usuário ${id} encontrado`);
-  } catch (erro) {
-    mostrarMensagem(erro.message, "erro");
-  }
-}
-
-// ===============================
-// MOSTRAR NA TABELA
-// ===============================
-
-function mostrarUsuarios(usuarios) {
-  tabela.innerHTML = "";
-
-  usuarios.forEach((usuario) => {
-    const linha = document.createElement("tr");
-
-    linha.innerHTML = `
-
-            <td>
-                ${usuario.id}
-            </td>
-
-            <td>
-                ${usuario.nome}
-            </td>
-
-            <td>
-                ${usuario.idade}
-            </td>
-
-            <td>
-
-                <div class="acoes">
-
-                    <button
-                        class="editar"
-                        onclick="editarUsuario(${usuario.id})"
-                    >
-                        Editar
-                    </button>
-
-                    <button
-                        class="excluir"
-                        onclick="deletarUsuario(${usuario.id})"
-                    >
-                        Excluir
-                    </button>
-
-                </div>
-
-            </td>
-        `;
-
-    tabela.appendChild(linha);
-  });
-}
-
-// ===============================
-// POST /usuarios
-// ===============================
-
-async function criarUsuario(nome, idade) {
-  const resposta = await fetch(`${API}/usuarios`, {
-    method: "POST",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
-    body: JSON.stringify({
-      nome: nome,
-      idade: idade,
-    }),
-  });
-
-  if (!resposta.ok) {
-    throw new Error("Erro ao criar usuário");
-  }
-
-  return await resposta.json();
-}
-
-// ===============================
-// PUT /usuarios/:id
-// ===============================
-
-async function atualizarUsuario(id, nome, idade) {
-  const resposta = await fetch(`${API}/usuarios/${id}`, {
-    method: "PUT",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-
-    body: JSON.stringify({
-      nome: nome,
-      idade: idade,
-    }),
-  });
-
-  if (!resposta.ok) {
-    throw new Error("Erro ao atualizar usuário");
-  }
-
-  return await resposta.json();
-}
-
-// ===============================
-// FORMULÁRIO
-// ===============================
-
-formulario.addEventListener("submit", async (evento) => {
-  evento.preventDefault();
-
-  const id = inputId.value;
-
-  const nome = inputNome.value;
-
-  const idade = Number(inputIdade.value);
-
-  try {
-    if (id) {
-      await atualizarUsuario(id, nome, idade);
-
-      mostrarMensagem("Usuário atualizado com sucesso!");
-    } else {
-      await criarUsuario(nome, idade);
-
-      mostrarMensagem("Usuário criado com sucesso!");
-    }
-
-    limparFormulario();
-
-    listarUsuarios();
-  } catch (erro) {
-    mostrarMensagem(erro.message, "erro");
-  }
-});
-
-// ===============================
-// PREPARAR EDIÇÃO
-// ===============================
-
-async function editarUsuario(id) {
-  try {
-    const resposta = await fetch(`${API}/usuarios/${id}`);
-
-    if (!resposta.ok) {
-      throw new Error("Usuário não encontrado");
-    }
-
-    const usuario = await resposta.json();
-
-    inputId.value = usuario.id;
-
-    inputNome.value = usuario.nome;
-
-    inputIdade.value = usuario.idade;
-
-    inputNome.focus();
-  } catch (erro) {
-    mostrarMensagem(erro.message, "erro");
-  }
-}
-
-// ===============================
-// DELETE /usuarios/:id
-// ===============================
-
-async function deletarUsuario(id) {
-  const confirmar = confirm(`Deseja excluir o usuário ${id}?`);
-
-  if (!confirmar) {
-    return;
-  }
-
-  try {
-    const resposta = await fetch(`${API}/usuarios/${id}`, {
-      method: "DELETE",
+const inputUrl = document.querySelector("#inputUrl");
+const btnUrl = document.querySelector("#btnUrl");
+
+const numeroUsuario = document.getElementById("idUsuario");
+const btnGet = document.getElementById("btnGet");
+const btnGetTodos = document.getElementById("btnGetTodos");
+const content = document.getElementById("context");
+const consoleHtml = document.getElementById("console");
+const listaUsuarios = document.querySelector("#listaUsuarios");
+
+const btnPost = document.querySelector("#btnPost");
+const nome = document.querySelector("#nome");
+const idade = document.querySelector("#idade");
+
+const btnUpdate = document.querySelector("#btnUpdate");
+
+//const URL = "http://localhost:3000/usuarios";
+
+let URL = "http://localhost:3000/usuarios";
+
+const fetchApi = (value) => {
+  const result = fetch(`${URL}${value}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
     });
 
-    if (!resposta.ok) {
-      throw new Error("Erro ao excluir usuário");
-    }
+  return result;
+};
 
-    mostrarMensagem("Usuário excluído com sucesso!");
+const postApi = (dados) => {
+  const result = fetch(URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dados),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
 
-    listarUsuarios();
-  } catch (erro) {
-    mostrarMensagem(erro.message, "erro");
-  }
-}
+  return result;
+};
 
-// ===============================
-// LIMPAR FORMULÁRIO
-// ===============================
+const updateApi = (value, dados) => {
+  const result = fetch(`${URL}${value}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dados),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
 
-function limparFormulario() {
-  inputId.value = "";
+  return result;
+};
 
-  inputNome.value = "";
+const deleteApi = (value) => {
+  const result = fetch(`${URL}${value}`, {
+    method: "DELETE",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
 
-  inputIdade.value = "";
-}
+  return result;
+};
 
-// ===============================
-// BUSCAR POR ID
-// ===============================
-
-document.getElementById("btnBuscar").addEventListener("click", () => {
-  const id = document.getElementById("buscarId").value;
-
-  if (!id) {
-    mostrarMensagem("Digite um ID.", "erro");
-
-    return;
-  }
-
-  buscarUsuario(id);
+btnGet.addEventListener("click", async (event) => {
+  event.preventDefault();
+  GetUsuariosId(numeroUsuario.value);
 });
 
-// ===============================
-// MOSTRAR TODOS
-// ===============================
+btnGetTodos.addEventListener("click", async (event) => {
+  event.preventDefault();
+  GetTodos();
+});
 
-document.getElementById("btnTodos").addEventListener("click", listarUsuarios);
+btnPost.addEventListener("click", async (event) => {
+  event.preventDefault();
 
-// ===============================
-// CANCELAR
-// ===============================
+  const dados = {
+    nome: nome.value,
+    idade: idade.value,
+  };
 
-document.getElementById("cancelar").addEventListener("click", limparFormulario);
+  PostUsuario(dados);
+});
 
-// ===============================
-// INICIALIZAÇÃO
-// ===============================
+btnUrl.addEventListener("click", () => {
+  URL = `${inputUrl.value}/usuarios`;
+  content.textContent = inputUrl.value;
+})
 
-listarUsuarios();
+const render = (lista) => {
+  listaUsuarios.innerHTML = "";
+
+  lista.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = `nome: ${item.nome}, idade: ${item.idade}`;
+    listaUsuarios.appendChild(li);
+  });
+};
+
+const GetTodos = async () => {
+  consoleHtml.textContent = URL;
+
+  const result = await fetchApi("");
+  content.textContent = `${JSON.stringify(result, undefined, 2)}`;
+  render(result);
+};
+
+const GetUsuariosId = async (value) => {
+  consoleHtml.textContent = `${URL}/${value}`;
+
+  const result = await fetchApi(`/${value}`);
+  content.textContent = `${JSON.stringify(result, undefined, 2)}`;
+
+  render(result);
+};
+
+const PostUsuario = async (dados) => {
+  const result = await postApi(dados);
+
+  content.textContent = JSON.stringify(result, undefined, 2);
+  render(result);
+};
+
+const UpdateUsuario = async (value) => {
+  consoleHtml.textContent = `${URL}/${value}`;
+
+  const dados = {
+    nome: nomeUsuario.value,
+    idade: idadeUsuario.value,
+  };
+
+  const result = await updateApi(`/${value}`, dados);
+
+  content.textContent = JSON.stringify(result, undefined, 2);
+};
+
+const DeleteUsuario = async (value) => {
+  consoleHtml.textContent = `${URL}/${value}`;
+
+  const result = await deleteApi(`/${value}`);
+
+  content.textContent = JSON.stringify(result, undefined, 2);
+};
