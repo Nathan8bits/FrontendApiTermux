@@ -19,7 +19,7 @@ const btnUpdate = document.querySelector("#btnUpdate");
 let URL = "http://localhost:3000/usuarios";
 
 const fetchApi = (value) => {
-  const result = fetch(`${URL}/usuarios${value}`)
+  const result = fetch(`${URL}${value}`)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -98,7 +98,7 @@ btnPost.addEventListener("click", async (event) => {
 });
 
 btnUrl.addEventListener("click", () => {
-  URL = inputUrl.value;
+  URL = `${inputUrl.value}/usuarios`;
   content.textContent = inputUrl.value;
 })
 
